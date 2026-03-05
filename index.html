@@ -5,7 +5,6 @@
     <title>PoE Mirage Roulette - Final Edition</title>
     <style>
         body {
-            /* A imagem deve estar na mesma pasta do repositório para carregar corretamente */
             background: #000 url('layeredkeyart-highreslogo_7qdg.jpg') no-repeat center center fixed;
             background-size: cover;
             display: flex; 
@@ -19,10 +18,11 @@
             overflow: hidden;
         }
 
+        /* Container ampliado para acomodar roletas maiores */
         .container { 
             position: relative; 
-            width: 650px; 
-            height: 650px; 
+            width: 850px; 
+            height: 850px; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -31,25 +31,25 @@
         /* Marcador Superior */
         .marker {
             position: absolute; 
-            top: -15px; 
+            top: 10px; 
             left: 50%; 
             transform: translateX(-50%);
             width: 0; 
             height: 0; 
-            border-left: 20px solid transparent; 
-            border-right: 20px solid transparent;
-            border-top: 35px solid #ffd700; 
+            border-left: 25px solid transparent; 
+            border-right: 25px solid transparent;
+            border-top: 40px solid #ffd700; 
             z-index: 110; 
-            filter: drop-shadow(0 0 8px #000);
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
         }
 
         /* Linha Guia Vertical */
         .guide-line {
             position: absolute; 
-            top: 0; 
+            top: 25px; 
             left: 50%; 
-            width: 2px; 
-            height: 325px; 
+            width: 3px; 
+            height: 400px; 
             background: linear-gradient(to bottom, #ffd700, rgba(255, 215, 0, 0));
             transform: translateX(-50%); 
             z-index: 105; 
@@ -59,18 +59,19 @@
         .wheel {
             position: absolute; 
             border-radius: 50%; 
-            border: 2px solid rgba(90, 74, 58, 0.6);
+            border: 3px solid #5a4a3a;
             transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
             display: flex; 
             justify-content: center; 
             align-items: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            /* Sombra externa para distanciamento do background */
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.9));
         }
 
-        /* Camadas das Roletas */
-        #outer { width: 600px; height: 600px; z-index: 1; }
-        #mid   { width: 400px; height: 400px; z-index: 2; }
-        #inner { width: 200px; height: 200px; z-index: 3; }
+        /* Camadas ampliadas para os textos não vazarem */
+        #outer { width: 800px; height: 800px; z-index: 1; }
+        #mid   { width: 540px; height: 540px; z-index: 2; }
+        #inner { width: 280px; height: 280px; z-index: 3; }
 
         .label {
             position: absolute; 
@@ -79,33 +80,37 @@
             display: flex; 
             justify-content: center; 
             align-items: flex-start;
-            padding-top: 20px; 
+            padding-top: 25px; /* Espaço do topo da borda */
             box-sizing: border-box;
             font-weight: bold; 
             text-transform: uppercase; 
-            font-size: 13px;
-            text-shadow: 2px 2px 4px #000;
+            font-size: 15px; /* Texto levemente maior para leitura */
+            text-shadow: 2px 2px 3px #000;
             letter-spacing: 1px;
         }
 
+        /* Ajuste de fonte para a roleta interna */
+        #inner .label { font-size: 12px; padding-top: 20px; }
+
         button {
-            margin-top: 40px; 
-            padding: 15px 60px; 
-            background: rgba(20, 15, 10, 0.9);
+            margin-top: 30px; 
+            padding: 18px 70px; 
+            background: rgba(20, 15, 10, 0.95);
             color: #ffd700; 
             border: 2px solid #ffd700; 
-            font-size: 24px; 
+            font-size: 26px; 
             cursor: pointer;
             text-transform: uppercase; 
-            letter-spacing: 3px; 
+            letter-spacing: 4px; 
             transition: 0.3s;
             z-index: 120;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
         button:hover { 
             background: #ffd700; 
             color: #000; 
-            box-shadow: 0 0 25px gold; 
+            box-shadow: 0 0 30px gold; 
         }
     </style>
 </head>
@@ -127,18 +132,17 @@
             {
                 id: 'outer',
                 items: ['AIOV', 'BLACK', 'DURZAG', 'IGOR', 'KANASHIRO', 'RAPTOR', 'SNAKE', 'TRABALHO'],
-                // Cores com transparência (final '99') para revelar o fundo
-                colors: ['#4a0e0e99', '#0e2a4a99', '#2d4a0e99', '#4a3c0e99', '#3b0e4a99', '#0e4a4399', '#4a1d0e99', '#1a1a1a99']
+                colors: ['#4a0e0e', '#0e2a4a', '#2d4a0e', '#4a3c0e', '#3b0e4a', '#0e4a43', '#4a1d0e', '#1a1a1a']
             },
             {
                 id: 'mid',
-                items: ['FAZER CHORAR', 'MAMAR', 'RUSHAR', 'QUITAR', 'MENDIGAR', 'COMPRAR'],
-                colors: ['#632b2b99', '#2b406399', '#39632b99', '#63512b99', '#4a2b6399', '#2b635a99']
+                items: ['FAZER', 'CHORAR', 'MAMAR', 'RUSHAR', 'QUITAR', 'MENDIGAR', 'COMPRAR'],
+                colors: ['#632b2b', '#2b6341', '#2b4063', '#39632b', '#63512b', '#4a2b63', '#2b635a']
             },
             {
                 id: 'inner',
-                items: ['DA LIGA', 'EM 10 MIN', 'CHALLENGES', 'CURRENCY', '50 BUILDS', 'TIAGUINHO SHOW'],
-                colors: ['#8c3a3a99', '#3a568c99', '#4a8c3a99', '#8c743a99', '#663a8c99', '#3a8c7e99']
+                items: ['DA LIGA', 'EM 10 MIN', 'CHALLENGES', 'CURRENCY', '50 BUILDS', 'T. SHOW'],
+                colors: ['#8c3a3a', '#3a568c', '#4a8c3a', '#8c743a', '#663a8c', '#3a8c7e']
             }
         ];
 
@@ -169,11 +173,11 @@
 
         let curRot = [0, 0, 0];
         function spin() {
-            const base = Math.floor(Math.random() * 360) + 2160; // Pelo menos 6 voltas completas
+            const base = Math.floor(Math.random() * 360) + 2520; // Aumentado para 7 voltas mínimas
             
-            curRot[0] += base;            // Horário
-            curRot[1] -= (base + 540);    // Anti-horário
-            curRot[2] += (base + 1080);   // Horário
+            curRot[0] += base;
+            curRot[1] -= (base + 600);
+            curRot[2] += (base + 1200);
 
             document.getElementById('outer').style.transform = `rotate(${curRot[0]}deg)`;
             document.getElementById('mid').style.transform = `rotate(${curRot[1]}deg)`;
