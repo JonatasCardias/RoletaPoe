@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>PoE Mirage Roulette - Final Edition</title>
+    <style>
+        body {
+            background: #000 url('layeredkeyart-highreslogo_7qdg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; margin: 0; color: #ffd700; font-family: 'serif';
+            overflow: hidden;
+        }
+
+        .container { position: relative; width: 650px; height: 650px; display: flex; justify-content: center; align-items: center; }
+
+        /* Marcador Superior */
+        .marker {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent;
+            border-top: 35px solid #ffd700; z-index: 110; filter: drop-shadow(0 0 5px gold);
+        }
+
+        /* Linha Guia que vai até o centro */
+        .guide-line {
+            position: absolute; top: 0; left: 50%; width: 2px; height: 325px; /* Metade do container */
+            background: linear-gradient(to bottom, #ffd700, rgba(255, 215, 0, 0.1));
+            transform: translateX(-50%); z-index: 105; pointer-events: none;
+        }
+
+        .wheel {
+            position: absolute; border-radius: 50%; border: 2px solid #5a4a3a;
+            transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        /* Camadas */
+        #outer { width: 600px; height: 600px; z-index: 1; }
+        #mid   { width: 400px; height: 400px; z-index: 2; }
+        #inner { width: 200px; height: 200px; z-index: 3; }
+
+        .label {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: flex-start;
+            padding-top: 15px; box-sizing: border-box;
+            font-weight: bold; text-transform: uppercase; font-size: 13px;
+            text-shadow: 1px 1px 2px #000, -1px -1px 2px #000;
+        }
+
+        button {
+            margin-top: 40px; padding: 15px 60px; background: rgba(20, 15, 10, 0.95);
+            color: #ffd700; border: 2px solid #ffd700; font-size: 24px; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 3px; transition: 0.3s;
+        }
+        button:hover { background: #ffd700; color: #000; box-shadow: 0 0 20px gold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="marker"></div>
+        <div class="guide-line"></div>
+        
+        <div id="outer" class="wheel"></div>
+        <div id="mid" class="wheel"></div>
+        <div id="inner" class="wheel"></div>
+    </div>
+
+    <button onclick="spin()">Girar Destino</button>
+
+    <script>
+        // Paletas de cores sem repetições
+        const config = [
+            {
+                id: 'outer',
+                items: ['AIOV', 'BLACK', 'DURZAG', 'IGOR', 'KANASHIRO', 'RAPTOR', 'SNAKE', 'TRABALHO'],
+                colors: ['#4a0e0e', '#0e2a4a', '#2d4a0e', '#4a3c0e', '#3b0e4a', '#0e4a43', '#4a1d0e', '#1a1a1a']
+            },
+            {
+                id: 'mid',
+                items: ['FAZER CHORAR', 'MAMAR', 'RUSHAR', 'QUITAR', 'MENDIGAR', 'COMPRAR'],
+                colors: ['#632b2b', '#2b4063', '#39632b', '#63512b', '#4a2b63', '#2b635a']
+            },
+            {
+                id: 'inner',
+                items: ['DA LIGA', 'EM 10 MIN', 'CHALLENGES', 'CURRENCY', '50 BUILDS', 'T. SHOW'],
+                colors: ['#8c3a3a', '#3a568c', '#4a8c3a', '#8c743a', '#663a8c', '#3a8c7e']
+            }
+        ];
+
+        function createWheel(conf) {
+            const el = document.getElementById(conf.id);
+            const numItems = conf.items.length;
+            const step = 360 / numItems;
+            
+            // Fundo Cônico
+            let gradientStr = "conic-gradient(";
+            conf.colors.forEach((color, i) => {
+                // O ajuste de -step/2 no gradiente alinha a cor com o texto centralizado
+                const start = i * step;
+                const end = (i + 1) * step;
+                gradientStr += `${color} ${start}deg ${end}deg${i === numItems - 1 ? '' : ','}`;
+            });
+            gradientStr += ")";
+            el.style.background = gradientStr;
+
+            // Nomes
+            conf.items.forEach((text, i) => {
+                const label = document.createElement('div');
+                label.className = 'label';
+                // Rotaciona o container do nome para ficar no centro da fatia
+                label.style.transform = `rotate(${(i * step) + (step / 2)}deg)`;
+                label.innerText = text;
+                el.appendChild(label);
+            });
+        }
+
+        config.forEach(createWheel);
+
+        let curRot = [0, 0, 0];
+        function spin() {
+            // Rotação base aleatória
+            const base = Math.floor(Math.random() * 360) + 1800; 
+            
+            // Definindo direções e velocidades levemente diferentes para as 3
+            curRot[0] += base;            // Horário
+            curRot[1] -= (base + 450);    // Anti-horário
+            curRot[2] += (base + 900);    // Horário
+
+            document.getElementById('outer').style.transform = `rotate(${curRot[0]}deg)`;
+            document.getElementById('mid').style.transform = `rotate(${curRot[1]}deg)`;
+            document.getElementById('inner').style.transform = `rotate(${curRot[2]}deg)`;
+        }
+    </script>
+</body>
+</html>
